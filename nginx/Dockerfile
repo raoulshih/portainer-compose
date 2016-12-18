@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM drakerin/rpi-alpine-nginx
 
 RUN rm -v /etc/nginx/conf.d/*
 COPY config/portainer.conf /etc/nginx/conf.d/portainer.conf

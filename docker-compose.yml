@@ -2,23 +2,19 @@ version: '2'
 
 services:
   proxy:
-    build: nginx/
+    image: drakerin/rpi-alpine-nginx:latest
     container_name: "portainer-proxy"
     ports:
       - "80:80"
     networks:
       - local
-
-  templates:
-    image: portainer/templates
-    container_name: "portainer-templates"
-    networks:
-      - local
+    volumes_from:
+      - container:portainer-password
 
   portainer:
-    image: portainer/portainer
+    image: portainer/portainer:arm
     container_name: "portainer-app"
-    command: --templates http://templates/templates.json -d /data
+    command: -d /data --swarm
     networks:
       - local
     volumes:
@@ -26,7 +22,7 @@ services:
       - /opt/portainer/data:/data
 
   watchtower:
-    image: centurylink/watchtower
+    image: armhfbuild/watchtower
     container_name: "portainer-watchtower"
     command: --cleanup portainer-app
     volumes:
