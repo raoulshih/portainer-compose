@@ -10,16 +10,18 @@ services:
       - local
     volumes_from:
       - container:portainer-password
+    restart: always
 
   portainer:
     image: portainer/portainer:arm
     container_name: "portainer-app"
-    command: -d /data --swarm
+    command: -d /data
     networks:
       - local
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/portainer/data:/data
+    restart: always
 
   watchtower:
     image: armhfbuild/watchtower
@@ -27,6 +29,7 @@ services:
     command: --cleanup portainer-app
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
 
 networks:
   local:
